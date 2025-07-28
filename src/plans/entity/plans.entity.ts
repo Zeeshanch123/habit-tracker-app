@@ -20,4 +20,4 @@ export class Plan {
 
   @OneToMany(() => Payment, payment => payment.plan)
   payments: Payment[];
-} 
+}
