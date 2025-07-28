@@ -3,43 +3,32 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # or change to your branch name
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build NestJS Project
-        run: npm run build
-
-      - name: Deploy via SSH
-        uses: appleboy/scp-action@master
+      - name: Copy files via SCP
+        uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: "dist/*"
-          target: "/home/ubuntu/app"
+          source: "."
+          target: "/home/ubuntu/habit-tracker-app"
 
-      - name: Run App on EC2
-        uses: appleboy/ssh-action@master
+      - name: Run PM2 on EC2
+        uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            cd /home/ubuntu/app
-            npm install --omit=dev
-            pm2 restart app || pm2 start dist/main.js --name "app"
+            cd /home/ubuntu/habit-tracker-app
+            npm install
+            npm run build
+            pm2 restart habit-tracker-api || pm2 start dist/main.js --name habit-tracker-api
