@@ -24,7 +24,7 @@ export class AuthService {
   async signUp(dto: CreateUserDto) {
     const existing = await this.userRepo.findOne({ where: { email: dto.email } });
     if (existing) {
-      throw new BadRequestException('User with this email already exists in local database');
+      throw new BadRequestException('User with this email already exists');
     }
     // 1. Create user in Supabase Auth
     const { data, error } = await this.supabase.auth.signUp({
