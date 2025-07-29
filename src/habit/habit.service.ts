@@ -31,6 +31,9 @@ export class HabitService {
   async findAll(userId: string): Promise<NormalResponse<Habit[]>> {
     try {
       const habits = await this.habitRepo.find({ where: { user: { id: userId } }, relations: ['user'] });
+      if (habits.length === 0) {
+        return new NormalResponse([], 'You have not created any habits yet');
+      }
       return new NormalResponse(habits, 'Fetched habits successfully');
     } catch (err) {
       throw new BadRequestException(err.message);
