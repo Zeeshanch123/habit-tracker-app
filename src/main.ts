@@ -12,7 +12,9 @@ async function bootstrap() {
   app.enableCors();
 
   // 🔐 Raw body ONLY for Stripe webhook
-  app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' }));
+  // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' }));
+  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
+
 
   // ✅ Global parsers for everything else
   app.use(json());
