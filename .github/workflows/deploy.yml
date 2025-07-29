@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: 🚀 Auto Deploy to EC2
 
 on:
   push:
@@ -8,27 +8,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: 🧾 Checkout code
         uses: actions/checkout@v3
 
-      - name: Copy files via SCP
-        uses: appleboy/scp-action@v0.1.3
+      - name: 🚀 Deploy over SSH
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          source: "."
-          target: "/home/ubuntu/habit-tracker-app"
-
-      - name: Run PM2 on EC2
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/habit-tracker-app
+            cd ${{ secrets.EC2_PATH }}
+            git pull origin main
             npm install
             npm run build
             pm2 restart habit-tracker-api || pm2 start dist/main.js --name habit-tracker-api
