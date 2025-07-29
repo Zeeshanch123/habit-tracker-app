@@ -93,6 +93,12 @@ export class PaymentsService {
     let event: Stripe.Event;
 
     try {
+      
+      console.log('📥 Received Stripe webhook');
+      console.log('📦 Signature:', signature);
+      console.log('🧾 Raw body type:', typeof rawBody);
+      console.log('🧾 Raw body preview (300 chars):', rawBody?.toString('utf8')?.slice(0, 300));
+
       event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
     } catch (err) {
       console.error('❌ Stripe webhook signature verification failed:', err.message);
