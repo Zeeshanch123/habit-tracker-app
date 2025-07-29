@@ -22,7 +22,7 @@ export class StripeService {
             product_data: {
               name: plan.name,
             },
-            unit_amount: plan.price * 100,
+            unit_amount: Math.round(plan.price * 100),
           },
           quantity: 1,
         },
