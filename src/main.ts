@@ -8,9 +8,13 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
+  // const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    rawBody: true, // Enable raw body parsing
-    bodyParser: true, // Ensure body parser is enabled
+    // rawBody: true, // Enable raw body parsing
+    // bodyParser: true, // Ensure body parser is enabled
+
+    bodyParser: false,
   });
 
   app.enableCors();
@@ -27,11 +31,18 @@ async function bootstrap() {
   //   },
   // );
 
-  app.use('/payments/webhooks/stripe', bodyParser.raw({ type: 'application/json' }));
+  // app.use('/payments/webhooks/stripe', bodyParser.raw({ type: 'application/json' }));
+
+  // 🔥 CRITICAL: Apply raw body parser ONLY to Stripe webhook endpoint
+  app.use('/payments/webhooks/stripe', express.raw({ 
+    type: 'application/json'
+  }));
 
   // ✅ Global parsers for everything else
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(bodyParser.json());
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true}));
 
   app.useGlobalPipes(
     new ValidationPipe({
