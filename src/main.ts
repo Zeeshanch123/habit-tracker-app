@@ -12,8 +12,8 @@ async function bootstrap() {
   app.enableCors();
 
   // 🔐 Raw body ONLY for Stripe webhook
-  // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' }));
-  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
+  // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' })); // it is perfect for localhost
+  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' })); // live production
 
 
   // ✅ Global parsers for everything else
