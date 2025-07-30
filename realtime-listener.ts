@@ -25,7 +25,7 @@ dotenv.config();
                 table: 'realtime_payments',
             },
             (payload) => {
-                console.log('🔔 Payment Event Received:', payload);
+                console.log('🔔 Realtime:Payload as Payment Event Received:', payload);
 
                 const payment = payload.new;
                 const userId = payment.user_id;

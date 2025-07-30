@@ -81,7 +81,8 @@ export class PaymentsService {
   }
 
 
-  async handleStripeWebhook(rawBody: Buffer, signature: string) {
+  // async handleStripeWebhook(rawBody: Buffer, signature: string) {
+  async handleStripeWebhook(rawBody, signature) {
     const stripe = this.stripeService.getStripeInstance();
     const endpointSecret = this.configService.get<string>('STRIPE_WEBHOOK_SECRET');
 
@@ -93,9 +94,10 @@ export class PaymentsService {
     let event: Stripe.Event;
 
     try {
-      
+
       console.log('📥 Received Stripe webhook');
       console.log('📦 Signature:', signature);
+      console.log('📦 Type of Signature:', typeof signature);
       console.log('🧾 Raw body type:', typeof rawBody);
       console.log('🧾 Raw body preview (300 chars):', rawBody?.toString('utf8')?.slice(0, 300));
 

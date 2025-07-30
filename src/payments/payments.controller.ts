@@ -9,13 +9,16 @@ import {
   HttpCode,
   Res,
   Headers,
+  HttpStatus,
+  // RawBodyRequest,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+// import { Response, Request } from 'express';
 import { PaymentsService } from './payments.service';
 import { SupabaseAuthGuard } from 'src/supabase/supabase-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Payment } from './entity/payments.entity';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 
 @Controller('payments')
 export class PaymentsController {
@@ -41,8 +44,9 @@ export class PaymentsController {
   @ApiExcludeEndpoint()
   async handleStripeWebhook(
     @Req() req: Request, // no need to extend req anymore
+    // @Req() req: RawBodyRequest<Request>, // no need to extend req anymore
     @Res() res: Response,
-    @Headers('stripe-signature') signature: string,
+    // @Headers('stripe-signature') signature: string,
   ) {
     try {
       // const rawBody = (req as any).body; // Stripe will get the raw body now
@@ -52,15 +56,22 @@ export class PaymentsController {
       // in main.ts file
 
       // now this below is for live production req,ote hosting
-      const rawBody = (req as any).rawBody as Buffer; //now it's truly raw
-      console.log("rawBody:", rawBody);
+      // const rawBody = (req as any).rawBody as Buffer; //now it's truly raw
+      // console.log("rawBody:", rawBody);
+
+      // const signature = req.headers['stripe-signature'];
+      const signature = req.headers['stripe-signature'] as string;
+      // const rawBody = req.rawBody;
+      const rawBody = req.body as Buffer;
 
       await this.paymentService.handleStripeWebhook(rawBody, signature);
       console.log('✅ Webhook handled successfully');
-      return res.send({ received: true });
+      // return res.send({ received: true });
+      return res.status(HttpStatus.OK).send({ received: true });
     } catch (err) {
       console.error('❌ Webhook error:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      // return res.status(400).send(`Webhook Error: ${err.message}`);
+      return res.status(HttpStatus.BAD_REQUEST).send(`Webhook Error: ${err.message}`);
     }
   }
 
