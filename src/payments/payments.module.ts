@@ -13,5 +13,6 @@ import { SupabaseModule } from '../supabase/supabase.module';
   imports: [TypeOrmModule.forFeature([Payment, Plan, User]), ConfigModule, SupabaseModule],
   controllers: [PaymentsController],
   providers: [PaymentsService, StripeService],
+  exports: [PaymentsService],
 })
 export class PaymentsModule { }
