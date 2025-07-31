@@ -47,11 +47,11 @@ export class PaymentsController {
   @HttpCode(200)
   @ApiExcludeEndpoint()
   async handleStripeWebhook(
-    // @Req() req: Request,
+    @Req() req: Request,
     @Res() res: Response,
     @Headers('stripe-signature') signature: string,
     // @RawBody() rawBody: Buffer
-    @Req() req: Request & { body: Buffer },
+    // @Req() req: Request & { body: Buffer },
   ) {
     try {
       // const rawBody = (req as any).body; // Stripe will get the raw body now
@@ -61,7 +61,8 @@ export class PaymentsController {
       // // in main.ts file
 
       // const rawBody = (req as any).rawBody; // ✅ actual raw buffer
-      const rawBody = req.body;
+      // const rawBody = req.body;
+      const rawBody = req.body as Buffer;
       await this.paymentService.handleStripeWebhook(rawBody, signature);
       console.log('✅ Webhook handled successfully');
       return res.status(HttpStatus.OK).send({ received: true });

@@ -12,7 +12,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
 
-  app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' })); //  localhost > working
+  // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' })); //  localhost > working
+  //
+
+  // ⚠️ Raw body for Stripe webhook route ONLY - must come before json middleware
+  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
 
   app.use(json());
   app.use(urlencoded({ extended: true }));
