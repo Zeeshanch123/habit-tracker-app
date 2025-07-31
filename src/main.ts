@@ -16,9 +16,16 @@ async function bootstrap() {
   //
 
   // ⚠️ Raw body for Stripe webhook route ONLY - must come before json middleware
-  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
+  // app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
+  app.use((req, res, next) => {
+    if (req.originalUrl === '/payments/webhooks/stripe') {
+      express.raw({ type: 'application/json' })(req, res, next);
+    } else {
+      express.json()(req, res, next);
+    }
+  });
 
-  app.use(json());
+  // app.use(json());
   app.use(urlencoded({ extended: true }));
   app.useGlobalPipes(
     new ValidationPipe({
