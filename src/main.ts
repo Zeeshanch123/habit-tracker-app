@@ -9,7 +9,11 @@ import * as bodyParser from 'body-parser';
 import { json, urlencoded } from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+    bodyParser: false, // Disable default body parsing for webhooks
+  });
   app.enableCors();
 
   // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' })); //  localhost > working
