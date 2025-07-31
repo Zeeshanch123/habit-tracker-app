@@ -25,7 +25,8 @@ async function bootstrap() {
   //   }
   // });
 
-  app.use('/payments/webhooks/stripe', bodyParser.raw({ type: '*/*' }));
+  // app.use('/payments/webhooks/stripe', bodyParser.raw({ type: '*/*' }));
+  app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
 
   // app.use(json());
   app.use(urlencoded({ extended: true }));

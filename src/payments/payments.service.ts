@@ -99,7 +99,7 @@ export class PaymentsService {
       console.log('📦 Signature:', signature);
       console.log('📦 Type of Signature:', typeof signature);
       console.log('🧾 Raw body type:', typeof rawBody);
-      console.log('🧾 Raw body preview (300 chars):', rawBody?.toString('utf8')?.slice(0, 300));
+      // console.log('🧾 Raw body preview (300 chars):', rawBody?.toString('utf8')?.slice(0, 300));
 
       event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
       console.log('✅ Stripe event verified:', event.type);
