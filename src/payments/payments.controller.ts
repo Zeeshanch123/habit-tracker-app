@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Logger,
   RawBodyRequest,
+  RawBody,
   // RawBodyRequest,
 } from '@nestjs/common';
 // import { Response, Request } from 'express';
@@ -46,16 +47,21 @@ export class PaymentsController {
   @HttpCode(200)
   @ApiExcludeEndpoint()
   async handleStripeWebhook(
-    @Req() req: Request,
+    // @Req() req: Request,
     @Res() res: Response,
     @Headers('stripe-signature') signature: string,
+    // @RawBody() rawBody: Buffer
+    @Req() req: Request & { body: Buffer },
   ) {
     try {
-      const rawBody = (req as any).body; // Stripe will get the raw body now
-      console.log("rawBody:", rawBody);
+      // const rawBody = (req as any).body; // Stripe will get the raw body now
+      // console.log("rawBody:", rawBody);
       // // This above 2 lines is working for localhost webhook logs if we enable this below line 
       // // app.use('/payments/webhooks/stripe', express.raw({ type: '*/*' })); // it is perfect for localhost // working
       // // in main.ts file
+
+      // const rawBody = (req as any).rawBody; // ✅ actual raw buffer
+      const rawBody = req.body;
       await this.paymentService.handleStripeWebhook(rawBody, signature);
       console.log('✅ Webhook handled successfully');
       return res.status(HttpStatus.OK).send({ received: true });
