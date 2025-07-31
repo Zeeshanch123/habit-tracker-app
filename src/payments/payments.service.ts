@@ -81,7 +81,8 @@ export class PaymentsService {
   }
 
 
-  async handleStripeWebhook(rawBody: Buffer, signature: string) {
+  // async handleStripeWebhook(rawBody: Buffer, signature: string) {
+  async handleStripeWebhook(rawBody, signature) {
     const stripe = this.stripeService.getStripeInstance();
     const endpointSecret = this.configService.get<string>('STRIPE_WEBHOOK_SECRET');
 

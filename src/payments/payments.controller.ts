@@ -49,7 +49,8 @@ export class PaymentsController {
   async handleStripeWebhook(
     @Req() req: Request,
     @Res() res: Response,
-    @Headers('stripe-signature') signature: string,
+    // @Headers('stripe-signature') signature: string,
+
     // @RawBody() rawBody: Buffer
     // @Req() req: Request & { body: Buffer },
   ) {
@@ -62,7 +63,9 @@ export class PaymentsController {
 
       // const rawBody = (req as any).rawBody; // ✅ actual raw buffer
       // const rawBody = req.body;
-      const rawBody = req.body as Buffer;
+      // const rawBody = req.body as Buffer;
+      const signature = req.headers['stripe-signature'];
+      const rawBody = req.body; // This is a Buffer now
       await this.paymentService.handleStripeWebhook(rawBody, signature);
       console.log('✅ Webhook handled successfully');
       return res.status(HttpStatus.OK).send({ received: true });
