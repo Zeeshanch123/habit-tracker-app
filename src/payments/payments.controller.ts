@@ -47,7 +47,8 @@ export class PaymentsController {
   @HttpCode(200)
   @ApiExcludeEndpoint()
   async handleStripeWebhook(
-    @Req() req: Request,
+    // @Req() req: Request,
+    @Req() req: RawBodyRequest<Request>,
     @Res() res: Response,
     // @Headers('stripe-signature') signature: string,
 
