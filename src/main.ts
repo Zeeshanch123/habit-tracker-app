@@ -32,8 +32,10 @@ async function bootstrap() {
   // app.use('/payments/webhooks/stripe', bodyParser.raw({ type: '*/*' }));
   app.use('/payments/webhooks/stripe', express.raw({ type: 'application/json' }));
 
-  app.use(json());
-  app.use(urlencoded({ extended: true }));
+  // app.use(json());
+  // app.use(urlencoded({ extended: true }));
+  app.use(bodyParser.json());        // <-- Parse JSON request bodies
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
