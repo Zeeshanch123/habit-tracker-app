@@ -41,7 +41,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
   const config = new DocumentBuilder()
     .setTitle('Habit Tracker API')
     .setDescription('API documentation for Habit Tracker')
