@@ -29,7 +29,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         // username: config.get<string>('DB_USER'),
         // password: config.get<string>('DB_PASSWORD'),
         // database: config.get<string>('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'], // it works
+        entities: [__dirname + '/**/*.entity{.ts,.js}'], //it works
         // entities: [], // it works
         // synchronize: false, // ✅Set to false in production level for end user as for clients || use migrations in real world
         synchronize: true, // Set to true in development level for developers;
