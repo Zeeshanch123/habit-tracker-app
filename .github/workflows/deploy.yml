@@ -21,7 +21,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ${{ secrets.EC2_PATH }}
+            echo "📥 Pulling latest code"
             git pull origin main
+            echo "📦 Installing packages"
             npm install
+            echo "🔨 Building app"
             npm run build
+            echo "🚀 Restarting app with PM2"
             pm2 restart habit-tracker-api || pm2 start dist/main.js --name habit-tracker-api
