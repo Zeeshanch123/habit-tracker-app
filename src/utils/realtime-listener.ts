@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './src/app.module';
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
+import { AppModule } from 'src/app.module';
 
 dotenv.config();
 

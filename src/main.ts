@@ -57,5 +57,10 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`✅ Server is running on ${port}!`);
   console.log('DB_HOST:', process.env.DB_HOST);
+
+
+  await import('./utils/realtime-listener');
+
+
 }
 bootstrap();
