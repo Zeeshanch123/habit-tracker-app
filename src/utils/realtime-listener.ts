@@ -10,9 +10,11 @@ dotenv.config();
 
     const supabase = createClient(
         process.env.SUPABASE_URL!,
-        process.env.SUPABASE_ANON_KEY!
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
-    console.log('📡 Listening for payment events...');
+
+    console.log('Listening for payment events...');
+
     const channel = supabase
         .channel('custom-realtime-payments')
         .on(
@@ -23,24 +25,26 @@ dotenv.config();
                 table: 'realtime_payments',
             },
             (payload) => {
-                console.log('🔔 Realtime:Payload as Payment Event Received:', payload);
+                console.log('Realtime:Payload as Payment Event Received:', payload);
 
                 const payment = payload.new;
                 const userId = payment.user_id;
 
-                console.log('✅ Payment record inserted');
+                console.log('Payment record inserted');
                 console.log('User ID:', userId);
             }
         );
 
     await channel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-            console.log('✅ Supabase Realtime subscription active');
+            console.log('Supabase Realtime subscription active');
         } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Error subscribing to Supabase channel');
+            console.error('Error subscribing to Supabase channel');
+        } else {
+            console.warn('Subscription status changed:', status);
         }
     });
 
-    // Prevent process from exiting
-    //   setInterval(() => {}, 1000);
+    // Keep the process alive
+    // setInterval(() => {}, 1000);
 })();
