@@ -22,8 +22,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        // url: config.get<string>('LIVE_DB_URL'), // For Production
-        url: config.get<string>('LOCAL_DB_URL'), // For Development
+        url: config.get<string>('LIVE_DB_URL'), // For Production
+        // url: config.get<string>('LOCAL_DB_URL'), // For Development
         // host: config.get<string>('DB_HOST'),
         // port: config.get<number>('DB_PORT'),
         // username: config.get<string>('DB_USER'),
