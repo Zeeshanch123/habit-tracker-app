@@ -45,6 +45,7 @@ dotenv.config();
         }
     });
 
-    // Keep the process alive
     // setInterval(() => {}, 1000);
+    // setInterval(() => {}, 1000 * 60 * 60);
+
 })();
